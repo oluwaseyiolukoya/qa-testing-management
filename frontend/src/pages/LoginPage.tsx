@@ -97,21 +97,6 @@ export function LoginPage() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-
-          <div className="mt-6 border-t pt-6">
-            <p className="text-center text-sm text-muted-foreground mb-3">Demo Credentials</p>
-            <div className="space-y-2 text-sm">
-              <div className="rounded-md bg-muted p-3">
-                <p><span className="font-medium">Admin:</span> admin / admin123</p>
-              </div>
-              <div className="rounded-md bg-muted p-3">
-                <p><span className="font-medium">Tester:</span> tester / tester123</p>
-              </div>
-              <div className="rounded-md bg-muted p-3">
-                <p><span className="font-medium">Others:</span> john / john123, jane / jane123</p>
-              </div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
