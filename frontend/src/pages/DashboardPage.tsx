@@ -140,11 +140,22 @@ export function DashboardPage() {
       navigate(`/projects/${newProject.id}`);
     } catch (error: any) {
       console.error('Failed to create project:', error);
-      const errorMessage =
-        error?.response?.data?.error?.message ||
+      console.error('Error response data:', JSON.stringify(error?.response?.data, null, 2));
+      console.error('Request data sent:', JSON.stringify(data, null, 2));
+
+      const apiError = error?.response?.data?.error;
+      let errorMessage =
+        apiError?.message ||
         error?.response?.data?.message ||
         error?.message ||
         'Failed to create project';
+
+      // Backend sometimes swaps code/message for validation errors.
+      // If we just get a generic VALIDATION_ERROR message, prefer the code field.
+      if (apiError?.message === 'VALIDATION_ERROR' && apiError?.code) {
+        errorMessage = apiError.code;
+      }
+
       alert(`Error creating project: ${errorMessage}`);
     }
   };

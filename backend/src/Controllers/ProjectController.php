@@ -51,9 +51,12 @@ class ProjectController
     {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
+            error_log('ProjectController::create - Received data: ' . json_encode($data));
+            error_log('ProjectController::create - User ID: ' . $userId);
 
             // Validation
             if (empty($data['name']) || empty($data['code'])) {
+                error_log('ProjectController::create - Validation failed: name=' . ($data['name'] ?? 'null') . ', code=' . ($data['code'] ?? 'null'));
                 return Response::error('VALIDATION_ERROR', 'Name and code are required');
             }
 
