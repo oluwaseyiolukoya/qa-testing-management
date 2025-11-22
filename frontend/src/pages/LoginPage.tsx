@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -12,7 +11,6 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +28,8 @@ export function LoginPage() {
       console.log('Login response:', { hasToken: !!response.accessToken, user: response.user?.username });
       
       if (response.accessToken) {
-        navigate('/dashboard');
+        // Force a full page reload to ensure App re-renders with new auth state
+        window.location.href = '/dashboard';
       }
     } catch (err: any) {
       console.error('Login error:', err);
