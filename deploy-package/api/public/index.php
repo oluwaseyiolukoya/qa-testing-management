@@ -273,18 +273,6 @@ try {
         exit;
     }
 
-    // User activity routes
-    if ($segments[0] === 'user-activity') {
-        $controller = new \App\Controllers\UserActivityController();
-        
-        if ($requestMethod === 'GET') {
-            $controller->getUserActivity($_GET);
-        } else {
-            Response::notFound('Route not found');
-        }
-        exit;
-    }
-
     // Health check
     if ($segments[0] === 'health') {
         Response::success([

@@ -64,15 +64,29 @@ export function ProjectTestRunsTab({ projectId }: ProjectTestRunsTabProps) {
     }
   };
 
-  const handleCreate = async (testRun: Partial<TestRun>) => {
+  const handleCreate = async (testRun: Partial<TestRun> & { assignToSelf?: boolean }) => {
     try {
       const storedUser = localStorage.getItem('user');
       const userId = storedUser ? JSON.parse(storedUser).id : '';
       
+      // Create the test run
       await testRunsApi.create({
         ...testRun,
         executedById: userId,
       });
+
+      // If assignToSelf is true, update the test case to assign it to this user
+      if (testRun.assignToSelf && testRun.testCaseId) {
+        try {
+          await testCasesApi.update(testRun.testCaseId, {
+            assignedTo: userId
+          });
+        } catch (error) {
+          console.error('Failed to assign test case:', error);
+          // Don't fail the whole operation if assignment fails
+        }
+      }
+      
       setIsExecuteDialogOpen(false);
       fetchTestRuns();
     } catch (error) {
@@ -512,7 +526,7 @@ export function ProjectTestRunsTab({ projectId }: ProjectTestRunsTabProps) {
 interface ExecuteTestFormProps {
   projectId: string;
   testCases: TestCase[];
-  onSubmit: (testRun: Partial<TestRun>) => void;
+  onSubmit: (testRun: Partial<TestRun> & { assignToSelf?: boolean }) => void;
   onCancel: () => void;
 }
 
@@ -524,6 +538,7 @@ function ExecuteTestForm({ projectId: _projectId, testCases, onSubmit, onCancel 
   const [environment, setEnvironment] = useState('Production');
   const [actualResult, setActualResult] = useState('');
   const [buildVersion, setBuildVersion] = useState('');
+  const [assignToSelf, setAssignToSelf] = useState(true); // Default to true
 
   const selectedTestCase = testCases.find(tc => tc.id === testCaseId);
 
@@ -538,6 +553,7 @@ function ExecuteTestForm({ projectId: _projectId, testCases, onSubmit, onCancel 
       environment,
       actualResult: actualResult || undefined,
       buildVersion: buildVersion || undefined,
+      assignToSelf, // Pass this to parent
     });
   };
 
@@ -652,6 +668,19 @@ function ExecuteTestForm({ projectId: _projectId, testCases, onSubmit, onCancel 
           rows={4}
           placeholder="Additional notes about this test run..."
         />
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="assignToSelf"
+          checked={assignToSelf}
+          onChange={(e) => setAssignToSelf(e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300"
+        />
+        <Label htmlFor="assignToSelf" className="text-sm font-normal cursor-pointer">
+          Assign this test case to me
+        </Label>
       </div>
 
       <div className="flex justify-end gap-2">

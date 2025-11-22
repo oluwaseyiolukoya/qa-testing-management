@@ -40,6 +40,7 @@ export interface TestCase {
   estimatedTime?: number;
   steps: TestStep[];
   projectId?: string;
+  assignedTo?: string; // User ID who is assigned to this test case
   createdBy?: User;
   createdAt: string;
   updatedAt: string;

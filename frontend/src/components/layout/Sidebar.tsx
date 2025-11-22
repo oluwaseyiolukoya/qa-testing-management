@@ -9,7 +9,8 @@ import {
   BarChart,
   ChevronRight,
   ChevronDown,
-  Layers
+  Layers,
+  Activity
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
@@ -82,12 +83,19 @@ export function Sidebar({ className, currentUser }: SidebarProps) {
       label: 'Dashboard',
       path: '/dashboard',
     },
-    // Only show Team menu for ADMIN users
-    ...(currentUser?.role === 'ADMIN' ? [{
-      icon: Users,
-      label: 'Team',
-      path: '/team',
-    }] : []),
+    // Only show Team and User Activity menus for ADMIN users
+    ...(currentUser?.role === 'ADMIN' ? [
+      {
+        icon: Users,
+        label: 'Team',
+        path: '/team',
+      },
+      {
+        icon: Activity,
+        label: 'User Activity',
+        path: '/user-activity',
+      }
+    ] : []),
   ];
 
   return (

@@ -8,6 +8,7 @@ import { TestRunsPage } from './pages/TestRunsPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { TeamPage } from './pages/TeamPage';
 import { ProjectsPage } from './pages/ProjectsPage';
+import { UserActivityPage } from './pages/UserActivityPage';
 import { MainLayout } from './components/layout/MainLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -37,6 +38,14 @@ function App() {
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
                         <TeamPage />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/user-activity" 
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <UserActivityPage />
                       </ProtectedRoute>
                     } 
                   />

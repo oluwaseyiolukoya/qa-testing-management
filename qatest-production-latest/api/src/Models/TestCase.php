@@ -159,7 +159,6 @@ class TestCase
         if (isset($data['testData'])) $updateData['test_data'] = json_encode($data['testData']);
         if (isset($data['tags'])) $updateData['tags'] = json_encode($data['tags']);
         if (isset($data['estimatedTime'])) $updateData['estimated_time'] = $data['estimatedTime'];
-        if (isset($data['assignedTo'])) $updateData['assigned_to'] = $data['assignedTo'];
 
         if (!empty($updateData)) {
             $this->db->update('test_cases', $updateData, 'id = :id', ['id' => $id]);
