@@ -1,0 +1,32 @@
+---
+deployment:
+  tasks:
+    # Set deployment path
+    - export DEPLOYPATH=/home/cmpmnyin/public_html/qatest/
+    
+    # Create necessary directories
+    - mkdir -p $DEPLOYPATH
+    - mkdir -p $DEPLOYPATH/api
+    - mkdir -p $DEPLOYPATH/assets
+    
+    # Deploy backend (api directory)
+    - /bin/cp -R backend/* $DEPLOYPATH/api/
+    
+    # Deploy frontend build files
+    - /bin/cp -R frontend/dist/assets/* $DEPLOYPATH/assets/
+    - /bin/cp frontend/dist/index.html $DEPLOYPATH/
+    - /bin/cp frontend/dist/vite.svg $DEPLOYPATH/
+    
+    # Deploy root configuration
+    - /bin/cp .htaccess $DEPLOYPATH/
+    
+    # Deploy database exports
+    - mkdir -p $DEPLOYPATH/database/exports
+    - /bin/cp -R database/exports/* $DEPLOYPATH/database/exports/
+    
+    # Set permissions
+    - chmod 755 $DEPLOYPATH/api
+    - chmod 755 $DEPLOYPATH/api/public
+    - chmod 644 $DEPLOYPATH/.htaccess
+    - chmod 644 $DEPLOYPATH/index.html
+
